@@ -52,14 +52,28 @@ const Index = () => {
                 Ready to continue your learning journey?
               </p>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground">Current Rank</p>
-                <p className="text-2xl font-bold text-accent">#12</p>
+            <div className="flex items-center gap-6">
+              <div className="flex gap-2">
+                <Link to="/teacher">
+                  <Button variant="outline" size="sm" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                    Teacher View
+                  </Button>
+                </Link>
+                <Link to="/admin">
+                  <Button variant="outline" size="sm" className="border-secondary text-secondary-foreground hover:bg-secondary">
+                    Admin View
+                  </Button>
+                </Link>
               </div>
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground">Study Streak</p>
-                <p className="text-2xl font-bold text-secondary">7 days</p>
+              <div className="flex items-center gap-4">
+                <div className="text-right">
+                  <p className="text-sm text-muted-foreground">Current Rank</p>
+                  <p className="text-2xl font-bold text-accent">#12</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-muted-foreground">Study Streak</p>
+                  <p className="text-2xl font-bold text-secondary">7 days</p>
+                </div>
               </div>
             </div>
           </div>
