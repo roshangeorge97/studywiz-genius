@@ -52,28 +52,14 @@ const Index = () => {
                 Ready to continue your learning journey?
               </p>
             </div>
-            <div className="flex items-center gap-6">
-              <div className="flex gap-2">
-                <Link to="/teacher">
-                  <Button variant="outline" size="sm" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-                    Teacher View
-                  </Button>
-                </Link>
-                <Link to="/admin">
-                  <Button variant="outline" size="sm" className="border-secondary text-secondary-foreground hover:bg-secondary">
-                    Admin View
-                  </Button>
-                </Link>
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <p className="text-sm text-muted-foreground">Current Rank</p>
+                <p className="text-2xl font-bold text-accent">#12</p>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="text-right">
-                  <p className="text-sm text-muted-foreground">Current Rank</p>
-                  <p className="text-2xl font-bold text-accent">#12</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-muted-foreground">Study Streak</p>
-                  <p className="text-2xl font-bold text-secondary">7 days</p>
-                </div>
+              <div className="text-right">
+                <p className="text-sm text-muted-foreground">Study Streak</p>
+                <p className="text-2xl font-bold text-secondary">7 days</p>
               </div>
             </div>
           </div>
@@ -90,7 +76,7 @@ const Index = () => {
                 <Card className="group hover:shadow-glow transition-all duration-300 cursor-pointer bg-gradient-card border-border h-full">
                   <CardHeader className="text-center">
                     <div className={`w-16 h-16 ${module.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <IconComponent className="h-8 w-8 text-accent" />
+                      <IconComponent className="h-8 w-8 text-white" />
                     </div>
                     <CardTitle className="text-foreground">{module.title}</CardTitle>
                     <CardDescription>{module.description}</CardDescription>
