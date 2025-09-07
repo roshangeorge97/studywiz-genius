@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Users, BookOpen, BarChart3, Settings, FileText, Clock, Award, TrendingUp, AlertTriangle, MessageSquare, Lightbulb, Target, HelpCircle, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
 const TeacherDashboard = () => {
+  const navigate = useNavigate();
   // Mock data for batch performance
   const batchPerformance = [
     { topic: "Algebra", struggling: 8, total: 24, difficulty: "high", mastery: 45 },
@@ -179,8 +180,11 @@ const TeacherDashboard = () => {
                   </div>
                 ))}
               </div>
-              <Button className="w-full mt-4 bg-gradient-secondary text-secondary-foreground hover:opacity-90">
-                Address All Doubts
+              <Button 
+                className="w-full mt-4 bg-gradient-secondary text-secondary-foreground hover:opacity-90"
+                onClick={() => navigate('/teacher/doubts')}
+              >
+                View Detailed Doubt Queue
               </Button>
             </CardContent>
           </Card>

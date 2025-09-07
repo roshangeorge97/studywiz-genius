@@ -52,7 +52,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-2">
-                Welcome back, Alex! 👋
+                Welcome back, Roshan! 👋
               </h1>
               <p className="text-muted-foreground">
                 Ready to continue your learning journey?
@@ -60,7 +60,7 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-6">
               <Link to="/login">
-                <Button variant="outline" size="sm" className="bg-accent border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                <Button variant="outline" size="sm" className="bg-accent border-accent text-white hover:bg-accent hover:text-accent-foreground">
                   Switch Account
                 </Button>
               </Link>

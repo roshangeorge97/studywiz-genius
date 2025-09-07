@@ -10,6 +10,7 @@ import TestResults from "./pages/TestResults";
 import LearningPath from "./pages/LearningPath";
 import Summary from "./pages/Summary";
 import TeacherDashboard from "./pages/TeacherDashboard";
+import DoubtQueue from "./pages/DoubtQueue";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/learning-path" element={<LearningPath />} />
           <Route path="/summary" element={<Summary />} />
           <Route path="/teacher" element={<TeacherDashboard />} />
+          <Route path="/teacher/doubts" element={<DoubtQueue />} />
           <Route path="/admin" element={<AdminDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
