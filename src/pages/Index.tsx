@@ -90,7 +90,7 @@ const Index = () => {
                 <Card className="group hover:shadow-glow transition-all duration-300 cursor-pointer bg-gradient-card border-border h-full">
                   <CardHeader className="text-center">
                     <div className={`w-16 h-16 ${module.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <IconComponent className="h-8 w-8 text-accent" />
+                      <IconComponent className="h-8 w-8 text-white" />
                     </div>
                     <CardTitle className="text-foreground">{module.title}</CardTitle>
                     <CardDescription>{module.description}</CardDescription>
