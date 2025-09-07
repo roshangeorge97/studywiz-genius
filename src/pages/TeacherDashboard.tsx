@@ -1,48 +1,65 @@
 import { Link } from "react-router-dom";
-import { Users, BookOpen, BarChart3, Settings, FileText, Clock, Award, TrendingUp } from "lucide-react";
+import { Users, BookOpen, BarChart3, Settings, FileText, Clock, Award, TrendingUp, AlertTriangle, MessageSquare, Lightbulb, Target, HelpCircle, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 const TeacherDashboard = () => {
-  const teacherModules = [
+  // Mock data for batch performance
+  const batchPerformance = [
+    { topic: "Algebra", struggling: 8, total: 24, difficulty: "high", mastery: 45 },
+    { topic: "Geometry", struggling: 3, total: 24, difficulty: "medium", mastery: 78 },
+    { topic: "Trigonometry", struggling: 12, total: 24, difficulty: "high", mastery: 32 },
+    { topic: "Statistics", struggling: 5, total: 24, difficulty: "low", mastery: 68 },
+    { topic: "Calculus", struggling: 15, total: 24, difficulty: "high", mastery: 28 }
+  ];
+
+  // Mock data for doubt aggregator
+  const doubts = [
     {
-      title: "Student Management",
-      description: "View and manage student progress and performance",
-      icon: Users,
-      path: "/teacher/students",
-      color: "bg-gradient-secondary",
-      stats: "24 active students"
+      topic: "Quadratic Equations",
+      count: 8,
+      commonQuestion: "How to find discriminant when coefficients are fractions?",
+      suggestedAid: "Visual fraction calculator demo",
+      priority: "high"
     },
     {
-      title: "Course Content",
-      description: "Create and manage learning materials and tests",
-      icon: BookOpen,
-      path: "/teacher/content",
-      color: "bg-gradient-secondary",
-      stats: "8 courses created"
+      topic: "Circle Theorems",
+      count: 5,
+      commonQuestion: "When to use inscribed angle vs central angle?",
+      suggestedAid: "Interactive circle diagram",
+      priority: "medium"
     },
     {
-      title: "Analytics",
-      description: "Track class performance and learning outcomes",
-      icon: BarChart3,
-      path: "/teacher/analytics",
-      color: "bg-gradient-secondary",
-      stats: "85% avg performance"
-    },
-    {
-      title: "Assessments",
-      description: "Create and grade tests and assignments",
-      icon: FileText,
-      path: "/teacher/assessments",
-      color: "bg-gradient-secondary",
-      stats: "12 assessments"
+      topic: "Probability",
+      count: 6,
+      commonQuestion: "Difference between permutation and combination?",
+      suggestedAid: "Real-world examples worksheet",
+      priority: "high"
     }
   ];
 
-  const recentActivity = [
-    { title: "Mathematics Test - Grade 10A", status: "Completed", students: "22/24 submitted", time: "2 hours ago" },
-    { title: "Physics Quiz - Grade 11B", status: "In Progress", students: "15/20 submitted", time: "5 hours ago" },
-    { title: "Chemistry Assignment", status: "Graded", students: "24/24 graded", time: "1 day ago" }
+  // Mock data for content suggestions
+  const contentSuggestions = [
+    {
+      topic: "Algebra",
+      suggestion: "Focus on word problems - 65% of students struggled with application",
+      type: "practice",
+      urgency: "high"
+    },
+    {
+      topic: "Geometry",
+      suggestion: "Add more visual proofs - students respond well to diagrams",
+      type: "teaching_method",
+      urgency: "medium"
+    },
+    {
+      topic: "Trigonometry",
+      suggestion: "Review basic ratios before advanced concepts",
+      type: "prerequisite",
+      urgency: "high"
+    }
   ];
 
   return (
@@ -81,92 +98,126 @@ const TeacherDashboard = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Teacher Modules */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {teacherModules.map((module) => {
-            const IconComponent = module.icon;
-            return (
-              <Link key={module.title} to={module.path}>
-                <Card className="group hover:shadow-glow transition-all duration-300 cursor-pointer bg-gradient-card border-border h-full">
-                  <CardHeader className="text-center">
-                    <div className={`w-16 h-16 ${module.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <IconComponent className="h-8 w-8 text-secondary-foreground" />
+        {/* Batch Performance Overview */}
+        <Card className="mb-8 bg-gradient-card shadow-soft border-border">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5 text-accent" />
+              Batch Performance Overview - Topic Mastery Heatmap
+            </CardTitle>
+            <CardDescription>Students struggling by topic with difficulty-based color coding</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4">
+              {batchPerformance.map((topic, index) => (
+                <div key={index} className="flex items-center justify-between p-4 rounded-lg border bg-muted/20">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="font-medium text-foreground">{topic.topic}</span>
+                        <Badge variant={topic.difficulty === 'high' ? 'destructive' : topic.difficulty === 'medium' ? 'secondary' : 'default'}>
+                          {topic.difficulty}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm text-muted-foreground">
+                          {topic.struggling}/{topic.total} struggling
+                        </span>
+                        <div className="flex-1 max-w-xs">
+                          <Progress value={topic.mastery} className="h-2" />
+                          <span className="text-xs text-muted-foreground">{topic.mastery}% mastery</span>
+                        </div>
+                      </div>
                     </div>
-                    <CardTitle className="text-foreground">{module.title}</CardTitle>
-                    <CardDescription>{module.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <p className="text-sm font-medium text-accent">{module.stats}</p>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="outline">Customize Test</Button>
+                      <Button size="sm" className="bg-gradient-secondary text-secondary-foreground">
+                        Focus Session
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Recent Activity & Quick Stats */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Recent Activity */}
+        {/* Doubt Aggregator & Content Suggestions */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {/* Doubt Aggregator */}
           <Card className="bg-gradient-card shadow-soft border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-accent" />
-                Recent Activity
+                <MessageSquare className="h-5 w-5 text-accent" />
+                Doubt Aggregator
+                <Badge variant="outline" className="ml-auto">
+                  {doubts.reduce((sum, doubt) => sum + doubt.count, 0)} total
+                </Badge>
               </CardTitle>
+              <CardDescription>Grouped student doubts from this week</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                    <div>
-                      <p className="font-medium text-foreground">{activity.title}</p>
-                      <p className="text-sm text-muted-foreground">{activity.students}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+                {doubts.map((doubt, index) => (
+                  <div key={index} className="p-3 rounded-lg border bg-muted/20">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-foreground">{doubt.topic}</span>
+                        <Badge variant={doubt.priority === 'high' ? 'destructive' : 'secondary'}>
+                          {doubt.count} students
+                        </Badge>
+                      </div>
+                      <div className="flex gap-1">
+                        <HelpCircle className={`h-4 w-4 ${doubt.priority === 'high' ? 'text-destructive' : 'text-accent'}`} />
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                        activity.status === 'Completed' ? 'bg-success/20 text-success' :
-                        activity.status === 'In Progress' ? 'bg-warning/20 text-warning-foreground' :
-                        'bg-accent/20 text-accent'
-                      }`}>
-                        {activity.status}
-                      </span>
+                    <p className="text-sm text-muted-foreground mb-2">"{doubt.commonQuestion}"</p>
+                    <div className="flex items-center gap-2">
+                      <Lightbulb className="h-4 w-4 text-accent" />
+                      <span className="text-sm text-accent">{doubt.suggestedAid}</span>
                     </div>
                   </div>
                 ))}
               </div>
+              <Button className="w-full mt-4 bg-gradient-secondary text-secondary-foreground hover:opacity-90">
+                Address All Doubts
+              </Button>
             </CardContent>
           </Card>
 
-          {/* Class Performance */}
+          {/* Class Content Suggestions */}
           <Card className="bg-gradient-card shadow-soft border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-accent" />
-                Class Performance
+                <Target className="h-5 w-5 text-accent" />
+                Content Suggestions
               </CardTitle>
+              <CardDescription>AI-powered teaching recommendations</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Average Score</span>
-                  <span className="font-bold text-success">85%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Completion Rate</span>
-                  <span className="font-bold text-foreground">92%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Active Students</span>
-                  <span className="font-bold text-foreground">24/25</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Pending Reviews</span>
-                  <span className="font-bold text-accent">7</span>
-                </div>
+                {contentSuggestions.map((suggestion, index) => (
+                  <div key={index} className="p-3 rounded-lg border bg-muted/20">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="font-medium text-foreground">{suggestion.topic}</span>
+                      <div className="flex items-center gap-1">
+                        <AlertTriangle className={`h-4 w-4 ${suggestion.urgency === 'high' ? 'text-destructive' : 'text-accent'}`} />
+                        <Badge variant={suggestion.urgency === 'high' ? 'destructive' : 'secondary'}>
+                          {suggestion.urgency}
+                        </Badge>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">{suggestion.suggestion}</p>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="text-xs">
+                        {suggestion.type.replace('_', ' ')}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
               </div>
               <Button className="w-full mt-4 bg-gradient-secondary text-secondary-foreground hover:opacity-90">
-                View Detailed Reports
+                Implement Suggestions
               </Button>
             </CardContent>
           </Card>

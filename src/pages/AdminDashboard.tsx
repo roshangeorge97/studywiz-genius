@@ -1,65 +1,90 @@
 import { Link } from "react-router-dom";
-import { Users, School, BarChart3, Settings, Shield, Database, UserCheck, TrendingUp } from "lucide-react";
+import { Users, School, BarChart3, Settings, Shield, Database, UserCheck, TrendingUp, AlertTriangle, FileText, Send, CheckCircle, Clock, Award } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 const AdminDashboard = () => {
-  const adminModules = [
+  // Mock data for branch/batch overview
+  const branchOverview = [
     {
-      title: "User Management",
-      description: "Manage students, teachers, and admin accounts",
-      icon: Users,
-      path: "/admin/users",
-      color: "bg-gradient-secondary",
-      stats: "156 total users"
+      branch: "Downtown Campus",
+      totalStudents: 450,
+      activeStudents: 432,
+      engagementRate: 89,
+      avgTestScore: 78,
+      dropoutRisk: 12,
+      status: "healthy"
     },
     {
-      title: "School Management",
-      description: "Manage schools, classes, and institutional settings",
-      icon: School,
-      path: "/admin/schools",
-      color: "bg-gradient-secondary",
-      stats: "12 schools active"
+      branch: "Suburban Branch",
+      totalStudents: 320,
+      activeStudents: 298,
+      engagementRate: 74,
+      avgTestScore: 71,
+      dropoutRisk: 18,
+      status: "warning"
     },
     {
-      title: "System Analytics",
-      description: "Platform-wide analytics and performance metrics",
-      icon: BarChart3,
-      path: "/admin/analytics",
-      color: "bg-gradient-secondary",
-      stats: "98.5% uptime"
-    },
-    {
-      title: "Platform Settings",
-      description: "Configure system settings and preferences",
-      icon: Settings,
-      path: "/admin/settings",
-      color: "bg-gradient-secondary",
-      stats: "Latest v2.1.0"
-    },
-    {
-      title: "Security & Permissions",
-      description: "Manage access controls and security policies",
-      icon: Shield,
-      path: "/admin/security",
-      color: "bg-gradient-secondary",
-      stats: "All systems secure"
-    },
-    {
-      title: "Data Management",
-      description: "Database management and data analytics",
-      icon: Database,
-      path: "/admin/data",
-      color: "bg-gradient-secondary",
-      stats: "2.3TB data stored"
+      branch: "City Center",
+      totalStudents: 280,
+      activeStudents: 275,
+      engagementRate: 92,
+      avgTestScore: 82,
+      dropoutRisk: 5,
+      status: "excellent"
     }
   ];
 
-  const systemStats = [
-    { label: "Total Students", value: "1,245", change: "+12%" },
-    { label: "Active Teachers", value: "87", change: "+5%" },
-    { label: "Schools", value: "12", change: "0%" },
-    { label: "Tests Completed", value: "15,678", change: "+23%" }
+  // Mock data for teacher productivity
+  const teacherProductivity = [
+    {
+      name: "Sarah Johnson",
+      doubtsResolved: 89,
+      classesCompleted: 24,
+      studentImprovement: 15.2,
+      rating: "excellent"
+    },
+    {
+      name: "Michael Chen",
+      doubtsResolved: 67,
+      classesCompleted: 22,
+      studentImprovement: 12.8,
+      rating: "good"
+    },
+    {
+      name: "Emily Davis",
+      doubtsResolved: 45,
+      classesCompleted: 18,
+      studentImprovement: 8.5,
+      rating: "needs_improvement"
+    }
+  ];
+
+  // Mock data for automated reports
+  const reports = [
+    {
+      type: "Weekly Summary",
+      status: "sent",
+      recipients: "Management Team",
+      lastSent: "2 hours ago",
+      nextScheduled: "Next Monday 9:00 AM"
+    },
+    {
+      type: "Teacher Performance",
+      status: "scheduled",
+      recipients: "HR Department",
+      lastSent: "1 week ago",
+      nextScheduled: "Friday 5:00 PM"
+    },
+    {
+      type: "Student Progress",
+      status: "generating",
+      recipients: "Academic Committee",
+      lastSent: "3 days ago",
+      nextScheduled: "Tomorrow 8:00 AM"
+    }
   ];
 
   return (
@@ -98,111 +123,160 @@ const AdminDashboard = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* System Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {systemStats.map((stat, index) => (
-            <Card key={index} className="bg-gradient-card shadow-soft border-border">
-              <CardContent className="p-4">
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  <p className={`text-xs font-medium mt-1 ${
-                    stat.change.startsWith('+') ? 'text-success' : 
-                    stat.change.startsWith('-') ? 'text-destructive' : 'text-muted-foreground'
-                  }`}>
-                    {stat.change}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Admin Modules */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {adminModules.map((module) => {
-            const IconComponent = module.icon;
-            return (
-              <Link key={module.title} to={module.path}>
-                <Card className="group hover:shadow-glow transition-all duration-300 cursor-pointer bg-gradient-card border-border h-full">
-                  <CardHeader className="text-center">
-                    <div className={`w-16 h-16 ${module.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <IconComponent className="h-8 w-8 text-secondary-foreground" />
+        {/* Branch/Batch Overview */}
+        <Card className="mb-8 bg-gradient-card shadow-soft border-border">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <School className="h-5 w-5 text-accent" />
+              Branch/Batch Overview - Academic Health Snapshot
+            </CardTitle>
+            <CardDescription>Real-time overview of all branches with dropout risk warnings</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4">
+              {branchOverview.map((branch, index) => (
+                <div key={index} className="p-4 rounded-lg border bg-muted/20">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="font-semibold text-foreground text-lg">{branch.branch}</span>
+                      <Badge variant={
+                        branch.status === 'excellent' ? 'default' : 
+                        branch.status === 'healthy' ? 'secondary' : 'destructive'
+                      }>
+                        {branch.status}
+                      </Badge>
+                      {branch.dropoutRisk > 15 && (
+                        <Badge variant="destructive" className="flex items-center gap-1">
+                          <AlertTriangle className="h-3 w-3" />
+                          High Dropout Risk
+                        </Badge>
+                      )}
                     </div>
-                    <CardTitle className="text-foreground">{module.title}</CardTitle>
-                    <CardDescription>{module.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <p className="text-sm font-medium text-accent">{module.stats}</p>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
+                    <Button size="sm" variant="outline">View Details</Button>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-foreground">{branch.activeStudents}</p>
+                      <p className="text-xs text-muted-foreground">Active Students</p>
+                      <p className="text-xs text-muted-foreground">of {branch.totalStudents}</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-accent">{branch.engagementRate}%</p>
+                      <p className="text-xs text-muted-foreground">Engagement</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-success">{branch.avgTestScore}%</p>
+                      <p className="text-xs text-muted-foreground">Avg Test Score</p>
+                    </div>
+                    <div className="text-center">
+                      <p className={`text-2xl font-bold ${branch.dropoutRisk > 15 ? 'text-destructive' : 'text-warning'}`}>
+                        {branch.dropoutRisk}
+                      </p>
+                      <p className="text-xs text-muted-foreground">Dropout Risk</p>
+                    </div>
+                    <div className="text-center">
+                      <Progress value={branch.engagementRate} className="h-2 mb-1" />
+                      <p className="text-xs text-muted-foreground">Health Score</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* System Health & Recent Actions */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* System Health */}
+        {/* Teacher Productivity & Automated Reports */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {/* Teacher Productivity Insights */}
           <Card className="bg-gradient-card shadow-soft border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-success" />
-                System Health
+                <Award className="h-5 w-5 text-accent" />
+                Teacher Productivity Insights
               </CardTitle>
+              <CardDescription>Performance metrics and improvement tracking</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Server Uptime</span>
-                  <span className="font-bold text-success">99.8%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Database Performance</span>
-                  <span className="font-bold text-success">Excellent</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Active Sessions</span>
-                  <span className="font-bold text-foreground">847</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Storage Used</span>
-                  <span className="font-bold text-accent">2.3TB / 5TB</span>
-                </div>
+                {teacherProductivity.map((teacher, index) => (
+                  <div key={index} className="p-3 rounded-lg border bg-muted/20">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium text-foreground">{teacher.name}</span>
+                      <Badge variant={
+                        teacher.rating === 'excellent' ? 'default' :
+                        teacher.rating === 'good' ? 'secondary' : 'destructive'
+                      }>
+                        {teacher.rating.replace('_', ' ')}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 text-sm">
+                      <div className="text-center">
+                        <p className="font-bold text-accent">{teacher.doubtsResolved}</p>
+                        <p className="text-xs text-muted-foreground">Doubts Resolved</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="font-bold text-secondary">{teacher.classesCompleted}</p>
+                        <p className="text-xs text-muted-foreground">Classes Done</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="font-bold text-success">+{teacher.studentImprovement}%</p>
+                        <p className="text-xs text-muted-foreground">Student Improvement</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
+              <Button className="w-full mt-4 bg-gradient-secondary text-secondary-foreground hover:opacity-90">
+                View Detailed Analytics
+              </Button>
             </CardContent>
           </Card>
 
-          {/* Recent Admin Actions */}
+          {/* Automated Reports */}
           <Card className="bg-gradient-card shadow-soft border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <UserCheck className="h-5 w-5 text-accent" />
-                Recent Admin Actions
+                <FileText className="h-5 w-5 text-accent" />
+                Automated Reports
               </CardTitle>
+              <CardDescription>Scheduled PDF and WhatsApp summaries</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-2 bg-muted/50 rounded">
-                  <span className="text-sm text-foreground">New teacher account created</span>
-                  <span className="text-xs text-muted-foreground">2h ago</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-muted/50 rounded">
-                  <span className="text-sm text-foreground">System backup completed</span>
-                  <span className="text-xs text-muted-foreground">6h ago</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-muted/50 rounded">
-                  <span className="text-sm text-foreground">Security update deployed</span>
-                  <span className="text-xs text-muted-foreground">1d ago</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-muted/50 rounded">
-                  <span className="text-sm text-foreground">Database optimization</span>
-                  <span className="text-xs text-muted-foreground">2d ago</span>
-                </div>
+              <div className="space-y-4">
+                {reports.map((report, index) => (
+                  <div key={index} className="p-3 rounded-lg border bg-muted/20">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium text-foreground">{report.type}</span>
+                      <div className="flex items-center gap-2">
+                        {report.status === 'sent' && <CheckCircle className="h-4 w-4 text-success" />}
+                        {report.status === 'scheduled' && <Clock className="h-4 w-4 text-accent" />}
+                        {report.status === 'generating' && <div className="h-2 w-2 bg-accent rounded-full animate-pulse"></div>}
+                        <Badge variant={
+                          report.status === 'sent' ? 'default' :
+                          report.status === 'scheduled' ? 'secondary' : 'outline'
+                        }>
+                          {report.status}
+                        </Badge>
+                      </div>
+                    </div>
+                    <div className="text-sm text-muted-foreground space-y-1">
+                      <p>To: {report.recipients}</p>
+                      <p>Last sent: {report.lastSent}</p>
+                      <p>Next: {report.nextScheduled}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <Button className="w-full mt-4 bg-gradient-secondary text-secondary-foreground hover:opacity-90">
-                View All Activity Logs
-              </Button>
+              <div className="flex gap-2 mt-4">
+                <Button className="flex-1 bg-gradient-secondary text-secondary-foreground hover:opacity-90">
+                  <Send className="h-4 w-4 mr-2" />
+                  Send Now
+                </Button>
+                <Button variant="outline" className="flex-1">
+                  Configure
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
