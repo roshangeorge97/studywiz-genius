@@ -11,7 +11,7 @@ const Index = () => {
       description: "Take practice tests and assess your knowledge",
       icon: BookOpen,
       path: "/test",
-      color: "bg-gradient-primary",
+      color: "bg-white",
       stats: "5 tests available"
     },
     {
@@ -19,7 +19,7 @@ const Index = () => {
       description: "Personalized flashcards and study materials",
       icon: Brain,
       path: "/learning-path",
-      color: "bg-gradient-secondary",
+      color: "bg-white",
       stats: "12 topics to review"
     },
     {
@@ -27,7 +27,7 @@ const Index = () => {
       description: "Track your progress and performance insights",
       icon: BarChart3,
       path: "/summary",
-      color: "bg-accent",
+      color: "bg-white",
       stats: "85% average score"
     }
   ];
@@ -55,12 +55,12 @@ const Index = () => {
             <div className="flex items-center gap-6">
               <div className="flex gap-2">
                 <Link to="/teacher">
-                  <Button variant="outline" size="sm" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                  <Button variant="outline" size="sm" className="bg-accent border-accent text-secondary-foreground hover:bg-accent hover:text-accent-foreground">
                     Teacher View
                   </Button>
                 </Link>
                 <Link to="/admin">
-                  <Button variant="outline" size="sm" className="border-secondary text-secondary-foreground hover:bg-secondary">
+                  <Button variant="outline" size="sm" className="bg-accent border-secondary text-secondary-foreground hover:bg-secondary">
                     Admin View
                   </Button>
                 </Link>
