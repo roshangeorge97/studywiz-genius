@@ -17,33 +17,79 @@ const TestTaking = () => {
   const questions = [
     {
       id: 1,
-      question: "What is the derivative of x² + 3x + 5?",
-      options: ["2x + 3", "x² + 3", "2x + 5", "3x + 5"],
-      subject: "Mathematics"
+      question: "Which of the following is the correct structure of glucose?",
+      options: ["C6H12O6 with aldehyde group", "C6H12O6 with ketone group", "C5H10O5 with aldehyde group", "C6H10O5 with ketone group"],
+      subject: "Biology",
+      section: "Biomolecules",
+      hasImage: true,
+      imageDescription: "Structural formula showing glucose with -CHO group"
     },
     {
       id: 2,
-      question: "Which law states that energy cannot be created or destroyed?",
-      options: ["Newton's First Law", "Law of Conservation of Energy", "Ohm's Law", "Boyle's Law"],
-      subject: "Physics"
+      question: "In mitosis, which phase is characterized by the alignment of chromosomes at the cell's equator?",
+      options: ["Prophase", "Metaphase", "Anaphase", "Telophase"],
+      subject: "Biology",
+      section: "Cell Division"
     },
     {
       id: 3,
-      question: "What is the chemical formula for water?",
-      options: ["H2O", "CO2", "NaCl", "CH4"],
-      subject: "Chemistry"
+      question: "Which reaction shows nucleophilic substitution mechanism (SN2)?",
+      options: ["Primary alkyl halide + OH⁻", "Tertiary alkyl halide + OH⁻", "Alkyl halide + H₂O", "Aromatic halide + NH₃"],
+      subject: "Chemistry",
+      section: "Organic Chemistry",
+      hasImage: true,
+      imageDescription: "Mechanism showing backside attack of nucleophile on carbon center"
     },
     {
       id: 4,
-      question: "In which year did World War II end?",
-      options: ["1944", "1945", "1946", "1947"],
-      subject: "History"
+      question: "What is the IUPAC name of the compound CH₃-CH(CH₃)-CH₂-CH₃?",
+      options: ["2-methylbutane", "3-methylbutane", "Isopentane", "2-methylpropane"],
+      subject: "Chemistry",
+      section: "Organic Chemistry"
     },
     {
       id: 5,
-      question: "What is the square root of 144?",
-      options: ["11", "12", "13", "14"],
-      subject: "Mathematics"
+      question: "The oxidation state of manganese in KMnO₄ is:",
+      options: ["+7", "+6", "+5", "+4"],
+      subject: "Chemistry",
+      section: "Redox Reactions"
+    },
+    {
+      id: 6,
+      question: "Two charges +q and -q are placed at distance 2a. The electric field at the midpoint is:",
+      options: ["Zero", "kq/a²", "2kq/a²", "4kq/a²"],
+      subject: "Physics",
+      section: "Electrostatics"
+    },
+    {
+      id: 7,
+      question: "A particle moves in a circle of radius R with constant speed v. Its acceleration is:",
+      options: ["v²/R towards center", "v²/R tangential", "vR towards center", "Zero"],
+      subject: "Physics",
+      section: "Circular Motion"
+    },
+    {
+      id: 8,
+      question: "Which of the following has the highest frequency?",
+      options: ["X-rays", "Visible light", "Radio waves", "Microwaves"],
+      subject: "Physics",
+      section: "Electromagnetic Waves"
+    },
+    {
+      id: 9,
+      question: "In humans, which hormone regulates blood glucose levels?",
+      options: ["Insulin", "Thyroxine", "Adrenaline", "Growth hormone"],
+      subject: "Biology",
+      section: "Human Physiology"
+    },
+    {
+      id: 10,
+      question: "The structure of benzene shows:",
+      options: ["Resonance", "Tautomerism", "Geometric isomerism", "Optical isomerism"],
+      subject: "Chemistry",
+      section: "Aromatic Compounds",
+      hasImage: true,
+      imageDescription: "Benzene ring with delocalized π electrons"
     }
   ];
 
@@ -94,8 +140,8 @@ const TestTaking = () => {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">Mathematics Assessment</h1>
-                <p className="text-muted-foreground">Mixed Topics Test</p>
+              <h1 className="text-2xl font-bold text-foreground">NEET Practice Test</h1>
+              <p className="text-muted-foreground">Biology • Chemistry • Physics</p>
               </div>
             </div>
             <div className="flex items-center gap-6">
@@ -131,15 +177,31 @@ const TestTaking = () => {
               <CardTitle className="text-lg text-foreground">
                 Question {currentQuestion + 1}
               </CardTitle>
-              <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-medium">
-                {questions[currentQuestion].subject}
-              </span>
+              <div className="flex gap-2">
+                <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-medium">
+                  {questions[currentQuestion].subject}
+                </span>
+                <span className="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm font-medium">
+                  {questions[currentQuestion].section}
+                </span>
+              </div>
             </div>
           </CardHeader>
           <CardContent>
-            <h2 className="text-xl font-semibold text-foreground mb-6">
-              {questions[currentQuestion].question}
-            </h2>
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-foreground mb-4">
+                {questions[currentQuestion].question}
+              </h2>
+              
+              {questions[currentQuestion].hasImage && (
+                <div className="bg-muted/30 border-2 border-dashed border-accent/30 rounded-lg p-4 mb-4 text-center">
+                  <div className="text-accent mb-2">🧪 Chemical Structure Image</div>
+                  <p className="text-sm text-muted-foreground italic">
+                    {questions[currentQuestion].imageDescription}
+                  </p>
+                </div>
+              )}
+            </div>
             
             <RadioGroup
               value={answers[currentQuestion] || ""}

@@ -8,7 +8,8 @@ import Login from "./pages/Login";
 import TestTaking from "./pages/TestTaking";
 import TestResults from "./pages/TestResults";
 import LearningPath from "./pages/LearningPath";
-import Summary from "./pages/Summary";
+import StudentAnalytics from "./pages/StudentAnalytics";
+import TestSummary from "./pages/TestSummary";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import DoubtQueue from "./pages/DoubtQueue";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -28,7 +29,8 @@ const App = () => (
           <Route path="/test" element={<TestTaking />} />
           <Route path="/test/results/:testId" element={<TestResults />} />
           <Route path="/learning-path" element={<LearningPath />} />
-          <Route path="/summary" element={<Summary />} />
+          <Route path="/analytics" element={<StudentAnalytics />} />
+          <Route path="/test/results/:testId" element={<TestSummary />} />
           <Route path="/teacher" element={<TeacherDashboard />} />
           <Route path="/teacher/doubts" element={<DoubtQueue />} />
           <Route path="/admin" element={<AdminDashboard />} />

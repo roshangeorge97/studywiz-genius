@@ -32,7 +32,7 @@ const Index = () => {
       description: "Track your progress and performance insights",
       icon: BarChart3,
       image: analyticsIcon,
-      path: "/summary",
+      path: "/analytics",
       color: "bg-gradient-secondary",
       stats: "85% average score"
     }
@@ -182,7 +182,7 @@ const Index = () => {
                 Review Flashcards
               </Button>
             </Link>
-            <Link to="/summary">
+            <Link to="/analytics">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
                 Check Progress
               </Button>
