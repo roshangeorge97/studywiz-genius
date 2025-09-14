@@ -3,6 +3,9 @@ import { BookOpen, BarChart3, Brain, MessageCircle, TrendingUp, Clock } from "lu
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChatBot } from "@/components/ChatBot";
+import testTakingIcon from "@/assets/test-taking-icon.png";
+import learningPathIcon from "@/assets/learning-path-icon.png";
+import analyticsIcon from "@/assets/analytics-icon.png";
 
 const Index = () => {
   const modules = [
@@ -10,6 +13,7 @@ const Index = () => {
       title: "Test Taking",
       description: "Take practice tests and assess your knowledge",
       icon: BookOpen,
+      image: testTakingIcon,
       path: "/test",
       color: "bg-gradient-secondary",
       stats: "5 tests available"
@@ -18,6 +22,7 @@ const Index = () => {
       title: "Learning Path",
       description: "Personalized flashcards and study materials",
       icon: Brain,
+      image: learningPathIcon,
       path: "/learning-path",
       color: "bg-gradient-secondary",
       stats: "12 topics to review"
@@ -26,6 +31,7 @@ const Index = () => {
       title: "Analytics",
       description: "Track your progress and performance insights",
       icon: BarChart3,
+      image: analyticsIcon,
       path: "/analytics",
       color: "bg-gradient-secondary",
       stats: "85% average score"
@@ -82,8 +88,12 @@ const Index = () => {
               <Link key={module.title} to={module.path}>
                 <Card className="group hover:shadow-glow transition-all duration-300 cursor-pointer bg-gradient-card border-border h-full">
                   <CardHeader className="text-center">
-                    <div className="w-20 h-20 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 rounded-full bg-gradient-secondary flex items-center justify-center">
-                      <IconComponent className="w-10 h-10 text-secondary-foreground" />
+                    <div className="w-20 h-20 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 overflow-hidden rounded-full bg-gradient-secondary flex items-center justify-center">
+                      <img 
+                        src={module.image} 
+                        alt={module.title}
+                        className="w-12 h-12 object-cover"
+                      />
                     </div>
                     <CardTitle className="text-foreground">{module.title}</CardTitle>
                     <CardDescription>{module.description}</CardDescription>
