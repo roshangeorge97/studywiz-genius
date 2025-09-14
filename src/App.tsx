@@ -27,10 +27,9 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Index />} />
           <Route path="/test" element={<TestTaking />} />
-          <Route path="/test/results/:testId" element={<TestResults />} />
+          <Route path="/test/results/:testId" element={<TestSummary />} />
           <Route path="/learning-path" element={<LearningPath />} />
           <Route path="/analytics" element={<StudentAnalytics />} />
-          <Route path="/test/results/:testId" element={<TestSummary />} />
           <Route path="/teacher" element={<TeacherDashboard />} />
           <Route path="/teacher/doubts" element={<DoubtQueue />} />
           <Route path="/admin" element={<AdminDashboard />} />

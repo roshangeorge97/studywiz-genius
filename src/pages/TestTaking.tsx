@@ -12,9 +12,10 @@ const TestTaking = () => {
   const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
-  const [timeLeft, setTimeLeft] = useState(1800); // 30 minutes
+  const [timeLeft, setTimeLeft] = useState(10800); // 3 hours for NEET
 
   const questions = [
+    // Biology Questions (1-10)
     {
       id: 1,
       question: "Which of the following is the correct structure of glucose?",
@@ -33,6 +34,64 @@ const TestTaking = () => {
     },
     {
       id: 3,
+      question: "Which hormone is responsible for the development of secondary sexual characteristics in males?",
+      options: ["Testosterone", "Estrogen", "Progesterone", "FSH"],
+      subject: "Biology",
+      section: "Human Physiology"
+    },
+    {
+      id: 4,
+      question: "The process by which plants convert light energy into chemical energy is called:",
+      options: ["Respiration", "Photosynthesis", "Transpiration", "Fermentation"],
+      subject: "Biology",
+      section: "Plant Physiology"
+    },
+    {
+      id: 5,
+      question: "Which of the following is NOT a part of the human digestive system?",
+      options: ["Liver", "Pancreas", "Kidney", "Stomach"],
+      subject: "Biology",
+      section: "Human Physiology"
+    },
+    {
+      id: 6,
+      question: "The genetic material in prokaryotes is:",
+      options: ["Circular DNA", "Linear DNA", "RNA", "Protein"],
+      subject: "Biology",
+      section: "Genetics"
+    },
+    {
+      id: 7,
+      question: "Which blood group is considered the universal donor?",
+      options: ["A", "B", "AB", "O"],
+      subject: "Biology",
+      section: "Human Physiology"
+    },
+    {
+      id: 8,
+      question: "The process of breakdown of glucose in the absence of oxygen is called:",
+      options: ["Aerobic respiration", "Anaerobic respiration", "Photosynthesis", "Transpiration"],
+      subject: "Biology",
+      section: "Cell Biology"
+    },
+    {
+      id: 9,
+      question: "Which part of the brain controls breathing and heart rate?",
+      options: ["Cerebrum", "Cerebellum", "Medulla oblongata", "Hypothalamus"],
+      subject: "Biology",
+      section: "Human Physiology"
+    },
+    {
+      id: 10,
+      question: "The number of chromosomes in human gametes is:",
+      options: ["23", "46", "44", "22"],
+      subject: "Biology",
+      section: "Genetics"
+    },
+    
+    // Chemistry Questions (11-20)
+    {
+      id: 11,
       question: "Which reaction shows nucleophilic substitution mechanism (SN2)?",
       options: ["Primary alkyl halide + OH⁻", "Tertiary alkyl halide + OH⁻", "Alkyl halide + H₂O", "Aromatic halide + NH₃"],
       subject: "Chemistry",
@@ -41,55 +100,141 @@ const TestTaking = () => {
       imageDescription: "Mechanism showing backside attack of nucleophile on carbon center"
     },
     {
-      id: 4,
+      id: 12,
       question: "What is the IUPAC name of the compound CH₃-CH(CH₃)-CH₂-CH₃?",
       options: ["2-methylbutane", "3-methylbutane", "Isopentane", "2-methylpropane"],
       subject: "Chemistry",
       section: "Organic Chemistry"
     },
     {
-      id: 5,
+      id: 13,
       question: "The oxidation state of manganese in KMnO₄ is:",
       options: ["+7", "+6", "+5", "+4"],
       subject: "Chemistry",
       section: "Redox Reactions"
     },
     {
-      id: 6,
-      question: "Two charges +q and -q are placed at distance 2a. The electric field at the midpoint is:",
-      options: ["Zero", "kq/a²", "2kq/a²", "4kq/a²"],
-      subject: "Physics",
-      section: "Electrostatics"
+      id: 14,
+      question: "Which of the following is a strong acid?",
+      options: ["CH₃COOH", "H₂CO₃", "HCl", "H₂S"],
+      subject: "Chemistry",
+      section: "Acids and Bases"
     },
     {
-      id: 7,
-      question: "A particle moves in a circle of radius R with constant speed v. Its acceleration is:",
-      options: ["v²/R towards center", "v²/R tangential", "vR towards center", "Zero"],
-      subject: "Physics",
-      section: "Circular Motion"
-    },
-    {
-      id: 8,
-      question: "Which of the following has the highest frequency?",
-      options: ["X-rays", "Visible light", "Radio waves", "Microwaves"],
-      subject: "Physics",
-      section: "Electromagnetic Waves"
-    },
-    {
-      id: 9,
-      question: "In humans, which hormone regulates blood glucose levels?",
-      options: ["Insulin", "Thyroxine", "Adrenaline", "Growth hormone"],
-      subject: "Biology",
-      section: "Human Physiology"
-    },
-    {
-      id: 10,
+      id: 15,
       question: "The structure of benzene shows:",
       options: ["Resonance", "Tautomerism", "Geometric isomerism", "Optical isomerism"],
       subject: "Chemistry",
       section: "Aromatic Compounds",
       hasImage: true,
       imageDescription: "Benzene ring with delocalized π electrons"
+    },
+    {
+      id: 16,
+      question: "Which of the following is NOT a transition metal?",
+      options: ["Iron", "Copper", "Zinc", "Sodium"],
+      subject: "Chemistry",
+      section: "Periodic Table"
+    },
+    {
+      id: 17,
+      question: "The molecular formula of ethanol is:",
+      options: ["CH₃OH", "C₂H₅OH", "C₃H₇OH", "C₄H₉OH"],
+      subject: "Chemistry",
+      section: "Organic Chemistry"
+    },
+    {
+      id: 18,
+      question: "Which gas is produced when sodium reacts with water?",
+      options: ["Oxygen", "Hydrogen", "Chlorine", "Nitrogen"],
+      subject: "Chemistry",
+      section: "Chemical Reactions"
+    },
+    {
+      id: 19,
+      question: "The pH of a neutral solution is:",
+      options: ["0", "7", "14", "1"],
+      subject: "Chemistry",
+      section: "Acids and Bases"
+    },
+    {
+      id: 20,
+      question: "Which of the following is an example of a covalent bond?",
+      options: ["NaCl", "HCl", "CaCl₂", "MgO"],
+      subject: "Chemistry",
+      section: "Chemical Bonding"
+    },
+    
+    // Physics Questions (21-30)
+    {
+      id: 21,
+      question: "Two charges +q and -q are placed at distance 2a. The electric field at the midpoint is:",
+      options: ["Zero", "kq/a²", "2kq/a²", "4kq/a²"],
+      subject: "Physics",
+      section: "Electrostatics"
+    },
+    {
+      id: 22,
+      question: "A particle moves in a circle of radius R with constant speed v. Its acceleration is:",
+      options: ["v²/R towards center", "v²/R tangential", "vR towards center", "Zero"],
+      subject: "Physics",
+      section: "Circular Motion"
+    },
+    {
+      id: 23,
+      question: "Which of the following has the highest frequency?",
+      options: ["X-rays", "Visible light", "Radio waves", "Microwaves"],
+      subject: "Physics",
+      section: "Electromagnetic Waves"
+    },
+    {
+      id: 24,
+      question: "The unit of electric current is:",
+      options: ["Volt", "Ampere", "Ohm", "Watt"],
+      subject: "Physics",
+      section: "Electricity"
+    },
+    {
+      id: 25,
+      question: "Which law states that the force between two charges is directly proportional to the product of charges?",
+      options: ["Ohm's law", "Coulomb's law", "Newton's law", "Faraday's law"],
+      subject: "Physics",
+      section: "Electrostatics"
+    },
+    {
+      id: 26,
+      question: "The speed of light in vacuum is approximately:",
+      options: ["3 × 10⁶ m/s", "3 × 10⁸ m/s", "3 × 10¹⁰ m/s", "3 × 10¹² m/s"],
+      subject: "Physics",
+      section: "Optics"
+    },
+    {
+      id: 27,
+      question: "Which of the following is a scalar quantity?",
+      options: ["Force", "Velocity", "Speed", "Acceleration"],
+      subject: "Physics",
+      section: "Mechanics"
+    },
+    {
+      id: 28,
+      question: "The work done by a force is zero when:",
+      options: ["Force is perpendicular to displacement", "Force is parallel to displacement", "Force is zero", "Displacement is zero"],
+      subject: "Physics",
+      section: "Work and Energy"
+    },
+    {
+      id: 29,
+      question: "Which of the following is NOT a unit of energy?",
+      options: ["Joule", "Watt", "Calorie", "Electron volt"],
+      subject: "Physics",
+      section: "Energy"
+    },
+    {
+      id: 30,
+      question: "The resistance of a conductor depends on:",
+      options: ["Length only", "Area only", "Both length and area", "Neither length nor area"],
+      subject: "Physics",
+      section: "Electricity"
     }
   ];
 
@@ -110,9 +255,8 @@ const TestTaking = () => {
   };
 
   const handleSubmit = () => {
-    // Generate a test ID and navigate to results
-    const testId = Date.now().toString();
-    navigate(`/test/results/${testId}`);
+    // Navigate to test summary page with the specified format
+    navigate('/test/results/neet-mock-test-#12');
   };
 
   const formatTime = (seconds: number) => {
@@ -141,7 +285,7 @@ const TestTaking = () => {
               </Button>
               <div>
               <h1 className="text-2xl font-bold text-foreground">NEET Practice Test</h1>
-              <p className="text-muted-foreground">Biology • Chemistry • Physics</p>
+              <p className="text-muted-foreground">Biology (1-10) • Chemistry (11-20) • Physics (21-30)</p>
               </div>
             </div>
             <div className="flex items-center gap-6">
@@ -195,7 +339,11 @@ const TestTaking = () => {
               
               {questions[currentQuestion].hasImage && (
                 <div className="bg-muted/30 border-2 border-dashed border-accent/30 rounded-lg p-4 mb-4 text-center">
-                  <div className="text-accent mb-2">🧪 Chemical Structure Image</div>
+                  <img
+                    src={`src/assets/glucose-image.jpeg`}
+                    alt={questions[currentQuestion].imageDescription || "Question related image"}
+                    className="mx-auto mb-2 max-h-48 object-contain"
+                  />
                   <p className="text-sm text-muted-foreground italic">
                     {questions[currentQuestion].imageDescription}
                   </p>
@@ -250,7 +398,6 @@ const TestTaking = () => {
             <Button
               onClick={handleSubmit}
               className="bg-gradient-primary text-primary-foreground"
-              disabled={answeredQuestions < questions.length}
             >
               Submit Test
             </Button>
@@ -264,20 +411,43 @@ const TestTaking = () => {
           )}
         </div>
 
-        {/* Question Navigation */}
+        {/* Section Navigation */}
         <Card className="mt-8 bg-gradient-card shadow-soft border-border">
           <CardHeader>
-            <CardTitle className="text-lg text-foreground">Question Overview</CardTitle>
+            <CardTitle className="text-lg text-foreground">Section Navigation</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="flex gap-4 mb-4">
+              <Button
+                variant={currentQuestion < 10 ? "default" : "outline"}
+                onClick={() => setCurrentQuestion(0)}
+                className="flex-1"
+              >
+                Biology (1-10)
+              </Button>
+              <Button
+                variant={currentQuestion >= 10 && currentQuestion < 20 ? "default" : "outline"}
+                onClick={() => setCurrentQuestion(10)}
+                className="flex-1"
+              >
+                Chemistry (11-20)
+              </Button>
+              <Button
+                variant={currentQuestion >= 20 ? "default" : "outline"}
+                onClick={() => setCurrentQuestion(20)}
+                className="flex-1"
+              >
+                Physics (21-30)
+              </Button>
+            </div>
+            <div className="grid grid-cols-10 gap-1">
               {questions.map((_, index) => (
                 <Button
                   key={index}
                   variant={currentQuestion === index ? "default" : "outline"}
                   size="sm"
                   onClick={() => setCurrentQuestion(index)}
-                  className={`relative ${
+                  className={`relative text-xs ${
                     answers[index] 
                       ? "border-success bg-success/10 text-success hover:bg-success/20" 
                       : "border-border"
@@ -285,7 +455,7 @@ const TestTaking = () => {
                 >
                   {index + 1}
                   {answers[index] && (
-                    <CheckCircle className="absolute -top-1 -right-1 h-3 w-3 text-success" />
+                    <CheckCircle className="absolute -top-1 -right-1 h-2 w-2 text-success" />
                   )}
                 </Button>
               ))}

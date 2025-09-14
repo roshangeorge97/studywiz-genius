@@ -1,251 +1,470 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Search, Clock, CheckCircle, AlertTriangle, MessageSquare, Filter, ArrowLeft } from "lucide-react"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, MessageSquare, Mic, Send, FileText, Lightbulb, Users, Clock, CheckCircle, AlertTriangle, Volume2, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ChatBot } from "@/components/ChatBot";
 
-const doubts = [
-  {
-    id: 1,
-    student: "Alex Johnson",
-    batch: "Batch A",
-    subject: "Mathematics",
-    topic: "Calculus - Integration",
-    question: "How do I solve integration by parts when the polynomial degree is higher?",
-    aiSuggestion: "For integration by parts with higher degree polynomials, apply the rule recursively: ∫u dv = uv - ∫v du. Choose u as the polynomial (reduce degree each time) and dv as the exponential/trig function.",
-    timestamp: "2 minutes ago",
-    priority: "urgent",
-    status: "pending"
-  },
-  {
-    id: 2, 
-    student: "Sarah Chen",
-    batch: "Batch B",
-    subject: "Chemistry",
-    topic: "Organic Chemistry - Reactions",
-    question: "What's the mechanism for SN2 reaction and how does steric hindrance affect it?",
-    aiSuggestion: "SN2 mechanism involves backside attack by nucleophile. Steric hindrance from bulky groups reduces reaction rate: Primary > Secondary >> Tertiary alkyl halides.",
-    timestamp: "5 minutes ago", 
-    priority: "high",
-    status: "pending"
-  },
-  {
-    id: 3,
-    student: "Michael Rodriguez", 
-    batch: "Batch A",
-    subject: "Physics",
-    topic: "Waves - Interference",
-    question: "Can you explain constructive and destructive interference with examples?",
-    aiSuggestion: "Constructive interference occurs when waves are in phase (path difference = nλ), amplitudes add. Destructive interference when out of phase (path difference = (n+0.5)λ), amplitudes cancel.",
-    timestamp: "12 minutes ago",
-    priority: "medium", 
-    status: "pending"
-  },
-  {
-    id: 4,
-    student: "Emma Williams",
-    batch: "Batch C", 
-    subject: "Biology",
-    topic: "Cell Biology - Mitosis",
-    question: "What are the checkpoints in cell cycle and their importance?",
-    aiSuggestion: "Three main checkpoints: G1/S (DNA damage check), G2/M (DNA replication check), and Spindle checkpoint (chromosome attachment). They prevent errors and maintain genomic stability.",
-    timestamp: "18 minutes ago",
-    priority: "medium",
-    status: "approved"
-  }
-]
+const DoubtQueue = () => {
+  const navigate = useNavigate();
+  const [selectedDoubt, setSelectedDoubt] = useState<number | null>(null);
+  const [responseText, setResponseText] = useState("");
+  const [responseType, setResponseType] = useState<"text" | "voice" | "hint">("text");
 
-const getPriorityColor = (priority: string) => {
-  switch (priority) {
-    case 'urgent': return 'destructive'
-    case 'high': return 'warning'
-    case 'medium': return 'secondary'
-    default: return 'secondary'
-  }
-}
+  // Mock data for aggregated doubts
+  const doubts = [
+    {
+      id: 1,
+      topic: "Quadratic Equations",
+      subject: "Mathematics",
+      question: "How to find discriminant when coefficients are fractions?",
+      studentCount: 8,
+      priority: "high",
+      timestamp: "2 hours ago",
+      students: [
+        { name: "Alice Johnson", avatar: "AJ" },
+        { name: "Bob Smith", avatar: "BS" },
+        { name: "Carol Davis", avatar: "CD" },
+        { name: "David Wilson", avatar: "DW" }
+      ],
+      suggestedAid: "Visual fraction calculator demo",
+      aiAnalysis: "Students struggling with fraction manipulation in quadratic formula",
+      responses: []
+    },
+    {
+      id: 2,
+      topic: "Circle Theorems",
+      subject: "Mathematics",
+      question: "When to use inscribed angle vs central angle?",
+      studentCount: 5,
+      priority: "medium",
+      timestamp: "4 hours ago",
+      students: [
+        { name: "Emma Brown", avatar: "EB" },
+        { name: "Frank Miller", avatar: "FM" }
+      ],
+      suggestedAid: "Interactive circle diagram",
+      aiAnalysis: "Conceptual confusion between angle types",
+      responses: []
+    },
+    {
+      id: 3,
+      topic: "Probability",
+      subject: "Mathematics",
+      question: "Difference between permutation and combination?",
+      studentCount: 6,
+      priority: "high",
+      timestamp: "6 hours ago",
+      students: [
+        { name: "Grace Lee", avatar: "GL" },
+        { name: "Henry Taylor", avatar: "HT" },
+        { name: "Ivy Chen", avatar: "IC" }
+      ],
+      suggestedAid: "Real-world examples worksheet",
+      aiAnalysis: "Fundamental concept confusion affecting problem solving",
+      responses: []
+    },
+    {
+      id: 4,
+      topic: "Organic Chemistry",
+      subject: "Chemistry",
+      question: "How to identify functional groups in complex molecules?",
+      studentCount: 4,
+      priority: "medium",
+      timestamp: "1 day ago",
+      students: [
+        { name: "Jack Anderson", avatar: "JA" },
+        { name: "Kate White", avatar: "KW" }
+      ],
+      suggestedAid: "Functional group identification chart",
+      aiAnalysis: "Pattern recognition difficulty in organic structures",
+      responses: []
+    },
+    {
+      id: 5,
+      topic: "Electromagnetic Waves",
+      subject: "Physics",
+      question: "Why do radio waves have longer wavelength than X-rays?",
+      studentCount: 3,
+      priority: "low",
+      timestamp: "2 days ago",
+      students: [
+        { name: "Liam Garcia", avatar: "LG" }
+      ],
+      suggestedAid: "Electromagnetic spectrum diagram",
+      aiAnalysis: "Basic understanding of wave properties",
+      responses: []
+    }
+  ];
 
-const getPriorityIcon = (priority: string) => {
-  switch (priority) {
-    case 'urgent': return AlertTriangle
-    case 'high': return Clock
-    default: return MessageSquare
-  }
-}
+  const handleResponse = (doubtId: number) => {
+    // In a real app, this would save the response to backend
+    console.log(`Responding to doubt ${doubtId} with ${responseType}:`, responseText);
+    setResponseText("");
+    setSelectedDoubt(null);
+  };
 
-export default function DoubtQueue() {
-  const navigate = useNavigate()
-  const [filter, setFilter] = useState('all')
-  const [searchTerm, setSearchTerm] = useState('')
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "high": return "destructive";
+      case "medium": return "default";
+      case "low": return "secondary";
+      default: return "outline";
+    }
+  };
 
-  const filteredDoubts = doubts.filter(doubt => {
-    const matchesFilter = filter === 'all' || doubt.priority === filter || doubt.status === filter
-    const matchesSearch = doubt.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         doubt.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         doubt.student.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesFilter && matchesSearch
-  })
-
-  const urgentDoubts = doubts.filter(d => d.priority === 'urgent' && d.status === 'pending').length
+  const getPriorityIcon = (priority: string) => {
+    switch (priority) {
+      case "high": return <AlertTriangle className="h-4 w-4" />;
+      case "medium": return <Clock className="h-4 w-4" />;
+      case "low": return <CheckCircle className="h-4 w-4" />;
+      default: return null;
+    }
+  };
 
   return (
-    <div className="flex-1 space-y-6 p-6">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => navigate('/teacher')}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Dashboard
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold">Doubt Resolution Queue</h1>
-            <p className="text-muted-foreground">
-              Manage and resolve student doubts with AI assistance
-            </p>
-          </div>
-        </div>
-        {urgentDoubts > 0 && (
-          <Badge variant="destructive" className="text-sm">
-            {urgentDoubts} urgent doubts
-          </Badge>
-        )}
-      </div>
-
-      {/* Filters and Search */}
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search doubts by question, topic, or student..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+      <header className="bg-gradient-card shadow-soft border-b border-border">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/teacher")}
+                className="hover:bg-muted"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">Doubt Queue</h1>
+                <p className="text-muted-foreground">AI-aggregated student doubts and responses</p>
               </div>
             </div>
-            <Select value={filter} onValueChange={setFilter}>
-              <SelectTrigger className="w-[200px]">
-                <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Filter doubts" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Doubts</SelectItem>
-                <SelectItem value="urgent">Urgent Only</SelectItem>
-                <SelectItem value="high">High Priority</SelectItem>
-                <SelectItem value="pending">Pending Review</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex items-center gap-6">
+              <div className="text-center">
+                <p className="text-3xl font-bold text-accent">{doubts.length}</p>
+                <p className="text-sm text-muted-foreground">Total Doubts</p>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-warning">{doubts.filter(d => d.priority === 'high').length}</p>
+                <p className="text-sm text-muted-foreground">High Priority</p>
+              </div>
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </header>
 
-      {/* Doubt Cards */}
-      <div className="space-y-4">
-        {filteredDoubts.map((doubt) => {
-          const PriorityIcon = getPriorityIcon(doubt.priority)
-          return (
-            <Card key={doubt.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  {/* Header */}
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <PriorityIcon className="h-5 w-5 text-warning" />
-                      <div>
-                        <h3 className="font-semibold">{doubt.student}</h3>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <Tabs defaultValue="all" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4 bg-muted">
+            <TabsTrigger value="all">All Doubts</TabsTrigger>
+            <TabsTrigger value="high">High Priority</TabsTrigger>
+            <TabsTrigger value="responded">Responded</TabsTrigger>
+            <TabsTrigger value="pending">Pending</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="all" className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Doubts List */}
+              <div className="space-y-4">
+                <h2 className="text-lg font-semibold text-foreground">Aggregated Doubts</h2>
+                {doubts.map((doubt) => (
+                  <Card 
+                    key={doubt.id} 
+                    className={`bg-gradient-card shadow-soft border-border cursor-pointer transition-all hover:shadow-md ${
+                      selectedDoubt === doubt.id ? 'ring-2 ring-accent' : ''
+                    }`}
+                    onClick={() => setSelectedDoubt(selectedDoubt === doubt.id ? null : doubt.id)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Badge variant={getPriorityColor(doubt.priority)} className="flex items-center gap-1">
+                            {getPriorityIcon(doubt.priority)}
+                            {doubt.priority} priority
+                          </Badge>
+                          <Badge variant="outline">{doubt.studentCount} students</Badge>
+                        </div>
+                        <span className="text-xs text-muted-foreground">{doubt.timestamp}</span>
+                      </div>
+                      
+                      <div className="mb-3">
+                        <h3 className="font-semibold text-foreground mb-1">{doubt.topic}</h3>
+                        <p className="text-sm text-muted-foreground mb-2">{doubt.subject}</p>
+                        <p className="text-sm text-foreground italic">"{doubt.question}"</p>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex -space-x-2">
+                          {doubt.students.slice(0, 4).map((student, index) => (
+                            <div 
+                              key={index}
+                              className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-xs font-medium border-2 border-background"
+                            >
+                              {student.avatar}
+                            </div>
+                          ))}
+                          {doubt.students.length > 4 && (
+                            <div className="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-xs font-medium border-2 border-background">
+                              +{doubt.students.length - 4}
+                            </div>
+                          )}
+                        </div>
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <span>{doubt.batch}</span>
-                          <span>•</span>
-                          <span>{doubt.subject}</span>
-                          <span>•</span>
-                          <span>{doubt.timestamp}</span>
+                          <Lightbulb className="h-4 w-4" />
+                          <span>AI Suggestion</span>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={getPriorityColor(doubt.priority) as any}>
-                        {doubt.priority}
-                      </Badge>
-                      <Badge variant={doubt.status === 'approved' ? 'default' : 'secondary'} className={doubt.status === 'approved' ? 'bg-success text-success-foreground' : ''}>
-                        {doubt.status}
-                      </Badge>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
-                  {/* Topic */}
-                  <div className="bg-muted/50 rounded-md p-3">
-                    <p className="text-sm font-medium text-muted-foreground mb-1">Topic</p>
-                    <p className="font-medium">{doubt.topic}</p>
-                  </div>
+              {/* Response Panel */}
+              <div className="space-y-4">
+                <h2 className="text-lg font-semibold text-foreground">Response Panel</h2>
+                {selectedDoubt ? (
+                  <Card className="bg-gradient-card shadow-soft border-border">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <MessageSquare className="h-5 w-5 text-accent" />
+                        Respond to Doubt
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {(() => {
+                        const doubt = doubts.find(d => d.id === selectedDoubt);
+                        if (!doubt) return null;
+                        
+                        return (
+                          <>
+                            <div className="p-3 bg-muted/30 rounded-lg">
+                              <h4 className="font-semibold text-foreground mb-2">{doubt.topic}</h4>
+                              <p className="text-sm text-muted-foreground mb-2">{doubt.subject}</p>
+                              <p className="text-sm text-foreground italic mb-3">"{doubt.question}"</p>
+                              <div className="space-y-2">
+                                <div className="flex items-center gap-2 text-sm">
+                                  <Users className="h-4 w-4 text-accent" />
+                                  <span>{doubt.studentCount} students have this doubt</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm">
+                                  <Lightbulb className="h-4 w-4 text-accent" />
+                                  <span>AI Suggestion: {doubt.suggestedAid}</span>
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                  <strong>AI Analysis:</strong> {doubt.aiAnalysis}
+                                </div>
+                              </div>
+                            </div>
 
-                  {/* Question */}
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-2">Student's Question</p>
-                    <p className="text-sm leading-relaxed">{doubt.question}</p>
-                  </div>
+                            <Tabs value={responseType} onValueChange={(value) => setResponseType(value as "text" | "voice" | "hint")}>
+                              <TabsList className="grid w-full grid-cols-3">
+                                <TabsTrigger value="text">Text Response</TabsTrigger>
+                                <TabsTrigger value="voice">Voice Response</TabsTrigger>
+                                <TabsTrigger value="hint">Give Hints</TabsTrigger>
+                              </TabsList>
 
-                  {/* AI Suggestion */}
-                  <div className="border-l-4 border-primary pl-4">
-                    <p className="text-sm font-medium text-primary mb-2">AI Suggested Solution</p>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{doubt.aiSuggestion}</p>
-                  </div>
+                              <TabsContent value="text" className="space-y-4">
+                                <div>
+                                  <label className="text-sm font-medium text-foreground mb-2 block">Your Response</label>
+                                  <Textarea
+                                    placeholder="Type your detailed explanation here..."
+                                    value={responseText}
+                                    onChange={(e) => setResponseText(e.target.value)}
+                                    rows={4}
+                                  />
+                                </div>
+                                <Button 
+                                  onClick={() => handleResponse(selectedDoubt)}
+                                  className="w-full bg-gradient-primary text-primary-foreground"
+                                  disabled={!responseText.trim()}
+                                >
+                                  <Send className="h-4 w-4 mr-2" />
+                                  Send Response
+                                </Button>
+                              </TabsContent>
 
-                  {/* Actions */}
-                  {doubt.status === 'pending' && (
-                    <div className="flex items-center justify-end gap-3 pt-2">
-                      <Button variant="outline" size="sm">
-                        Modify Solution
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        Flag for Class
-                      </Button>
-                      <Button size="sm">
-                        Approve & Send
-                      </Button>
-                    </div>
-                  )}
+                              <TabsContent value="voice" className="space-y-4">
+                                <div className="p-4 border-2 border-dashed border-accent/30 rounded-lg text-center">
+                                  <Mic className="h-8 w-8 text-accent mx-auto mb-2" />
+                                  <p className="text-sm text-muted-foreground mb-2">Record your voice response</p>
+                                  <Button variant="outline" className="border-accent text-accent">
+                                    <Mic className="h-4 w-4 mr-2" />
+                                    Start Recording
+                                  </Button>
+                                </div>
+                                <Button 
+                                  onClick={() => handleResponse(selectedDoubt)}
+                                  className="w-full bg-gradient-primary text-primary-foreground"
+                                >
+                                  <Volume2 className="h-4 w-4 mr-2" />
+                                  Send Voice Response
+                                </Button>
+                              </TabsContent>
 
-                  {doubt.status === 'approved' && (
-                    <div className="flex items-center justify-end pt-2">
-                      <div className="flex items-center gap-2 text-sm text-success">
-                        <CheckCircle className="h-4 w-4" />
-                        Solution approved and sent to student
+                              <TabsContent value="hint" className="space-y-4">
+                                <div className="space-y-3">
+                                  <div>
+                                    <label className="text-sm font-medium text-foreground mb-2 block">Hint 1</label>
+                                    <Textarea
+                                      placeholder="First hint to guide students..."
+                                      rows={2}
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="text-sm font-medium text-foreground mb-2 block">Hint 2</label>
+                                    <Textarea
+                                      placeholder="Second hint for deeper understanding..."
+                                      rows={2}
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="text-sm font-medium text-foreground mb-2 block">Hint 3</label>
+                                    <Textarea
+                                      placeholder="Final hint leading to the solution..."
+                                      rows={2}
+                                    />
+                                  </div>
+                                </div>
+                                <Button 
+                                  onClick={() => handleResponse(selectedDoubt)}
+                                  className="w-full bg-gradient-secondary text-secondary-foreground"
+                                >
+                                  <Lightbulb className="h-4 w-4 mr-2" />
+                                  Send Hints
+                                </Button>
+                              </TabsContent>
+                            </Tabs>
+                          </>
+                        );
+                      })()}
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card className="bg-gradient-card shadow-soft border-border">
+                    <CardContent className="p-8 text-center">
+                      <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold text-foreground mb-2">Select a Doubt</h3>
+                      <p className="text-muted-foreground">Choose a doubt from the list to respond to students</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="high" className="space-y-6">
+            <div className="space-y-4">
+              {doubts.filter(d => d.priority === 'high').map((doubt) => (
+                <Card key={doubt.id} className="bg-gradient-card shadow-soft border-border">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="destructive" className="flex items-center gap-1">
+                          <AlertTriangle className="h-4 w-4" />
+                          High Priority
+                        </Badge>
+                        <Badge variant="outline">{doubt.studentCount} students</Badge>
                       </div>
+                      <span className="text-xs text-muted-foreground">{doubt.timestamp}</span>
                     </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          )
-        })}
+                    
+                    <div className="mb-3">
+                      <h3 className="font-semibold text-foreground mb-1">{doubt.topic}</h3>
+                      <p className="text-sm text-muted-foreground mb-2">{doubt.subject}</p>
+                      <p className="text-sm text-foreground italic">"{doubt.question}"</p>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex -space-x-2">
+                        {doubt.students.slice(0, 4).map((student, index) => (
+                          <div 
+                            key={index}
+                            className="w-8 h-8 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center text-xs font-medium border-2 border-background"
+                          >
+                            {student.avatar}
+                          </div>
+                        ))}
+                      </div>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => setSelectedDoubt(doubt.id)}
+                      >
+                        Respond Now
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="responded" className="space-y-6">
+            <div className="text-center py-8">
+              <CheckCircle className="h-12 w-12 text-success mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">No Responded Doubts</h3>
+              <p className="text-muted-foreground">All doubts are currently pending response</p>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="pending" className="space-y-6">
+            <div className="space-y-4">
+              {doubts.map((doubt) => (
+                <Card key={doubt.id} className="bg-gradient-card shadow-soft border-border">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Badge variant={getPriorityColor(doubt.priority)} className="flex items-center gap-1">
+                          {getPriorityIcon(doubt.priority)}
+                          {doubt.priority} priority
+                        </Badge>
+                        <Badge variant="outline">{doubt.studentCount} students</Badge>
+                      </div>
+                      <span className="text-xs text-muted-foreground">{doubt.timestamp}</span>
+                    </div>
+                    
+                    <div className="mb-3">
+                      <h3 className="font-semibold text-foreground mb-1">{doubt.topic}</h3>
+                      <p className="text-sm text-muted-foreground mb-2">{doubt.subject}</p>
+                      <p className="text-sm text-foreground italic">"{doubt.question}"</p>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex -space-x-2">
+                        {doubt.students.slice(0, 4).map((student, index) => (
+                          <div 
+                            key={index}
+                            className="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-xs font-medium border-2 border-background"
+                          >
+                            {student.avatar}
+                          </div>
+                        ))}
+                      </div>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => setSelectedDoubt(doubt.id)}
+                      >
+                        Respond
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
 
-      {filteredDoubts.length === 0 && (
-        <Card>
-          <CardContent className="p-12 text-center">
-            <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No doubts found</h3>
-            <p className="text-muted-foreground">
-              {searchTerm || filter !== 'all' 
-                ? "Try adjusting your search or filter criteria"
-                : "All caught up! No pending doubts at the moment."
-              }
-            </p>
-          </CardContent>
-        </Card>
-      )}
+      <ChatBot />
     </div>
-  )
-}
+  );
+};
+
+export default DoubtQueue;
