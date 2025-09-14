@@ -338,12 +338,79 @@ const TestTaking = () => {
               </h2>
               
               {questions[currentQuestion].hasImage && (
-                <div className="bg-muted/30 border-2 border-dashed border-accent/30 rounded-lg p-4 mb-4 text-center">
-                  <img
-                    src={`src/assets/glucose-image.jpeg`}
-                    alt={questions[currentQuestion].imageDescription || "Question related image"}
-                    className="mx-auto mb-2 max-h-48 object-contain"
-                  />
+                <div className="bg-muted/30 border-2 border-dashed border-accent/30 rounded-lg p-8 mb-4 text-center">
+                  <div className="flex justify-center mb-4">
+                    {questions[currentQuestion].id === 1 ? (
+                      // Glucose structure representation
+                      <svg width="200" height="120" viewBox="0 0 200 120" className="text-foreground">
+                        <g stroke="currentColor" strokeWidth="2" fill="none">
+                          {/* Glucose ring structure */}
+                          <polygon points="40,60 70,40 110,40 140,60 110,80 70,80" strokeWidth="2" />
+                          {/* CHO group */}
+                          <line x1="140" y1="60" x2="170" y2="60" />
+                          <text x="175" y="65" fontSize="12" fill="currentColor">CHO</text>
+                          {/* OH groups */}
+                          <line x1="70" y1="40" x2="70" y2="20" />
+                          <text x="65" y="15" fontSize="10" fill="currentColor">OH</text>
+                          <line x1="110" y1="40" x2="130" y2="25" />
+                          <text x="135" y="20" fontSize="10" fill="currentColor">OH</text>
+                          <line x1="110" y1="80" x2="130" y2="95" />
+                          <text x="135" y="110" fontSize="10" fill="currentColor">OH</text>
+                          <line x1="70" y1="80" x2="70" y2="100" />
+                          <text x="65" y="115" fontSize="10" fill="currentColor">OH</text>
+                        </g>
+                      </svg>
+                    ) : questions[currentQuestion].id === 11 ? (
+                      // SN2 mechanism representation
+                      <svg width="250" height="100" viewBox="0 0 250 100" className="text-foreground">
+                        <g stroke="currentColor" strokeWidth="2" fill="none">
+                          {/* Nucleophile approach */}
+                          <circle cx="30" cy="50" r="8" />
+                          <text x="22" y="55" fontSize="12" fill="currentColor">Nu⁻</text>
+                          <line x1="38" y1="50" x2="80" y2="50" strokeDasharray="5,5" />
+                          {/* Carbon center */}
+                          <circle cx="100" cy="50" r="6" fill="currentColor" />
+                          <text x="95" y="55" fontSize="10" fill="white">C</text>
+                          {/* Leaving group */}
+                          <line x1="120" y1="50" x2="160" y2="50" strokeDasharray="5,5" />
+                          <circle cx="180" cy="50" r="8" />
+                          <text x="175" y="55" fontSize="12" fill="currentColor">X⁻</text>
+                          {/* Backside attack arrow */}
+                          <path d="M 40 30 Q 70 20 90 40" markerEnd="url(#arrowhead)" />
+                        </g>
+                      </svg>
+                    ) : questions[currentQuestion].id === 15 ? (
+                      // Benzene structure
+                      <svg width="150" height="150" viewBox="0 0 150 150" className="text-foreground">
+                        <g stroke="currentColor" strokeWidth="2" fill="none">
+                          {/* Benzene ring */}
+                          <polygon points="75,25 115,50 115,100 75,125 35,100 35,50" />
+                          {/* Inner circle representing delocalization */}
+                          <circle cx="75" cy="75" r="30" strokeDasharray="8,4" />
+                          {/* Carbon labels */}
+                          <text x="70" y="20" fontSize="10" fill="currentColor">C</text>
+                          <text x="120" y="55" fontSize="10" fill="currentColor">C</text>
+                          <text x="120" y="105" fontSize="10" fill="currentColor">C</text>
+                          <text x="70" y="135" fontSize="10" fill="currentColor">C</text>
+                          <text x="25" y="105" fontSize="10" fill="currentColor">C</text>
+                          <text x="25" y="55" fontSize="10" fill="currentColor">C</text>
+                        </g>
+                      </svg>
+                    ) : (
+                      // Default chemical structure icon
+                      <div className="w-32 h-32 rounded-full bg-accent/20 flex items-center justify-center">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="text-accent">
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                          <circle cx="6" cy="6" r="2" stroke="currentColor" strokeWidth="2"/>
+                          <circle cx="18" cy="6" r="2" stroke="currentColor" strokeWidth="2"/>
+                          <circle cx="6" cy="18" r="2" stroke="currentColor" strokeWidth="2"/>
+                          <circle cx="18" cy="18" r="2" stroke="currentColor" strokeWidth="2"/>
+                          <path d="m9 9 6 6" stroke="currentColor" strokeWidth="2"/>
+                          <path d="m15 9-6 6" stroke="currentColor" strokeWidth="2"/>
+                        </svg>
+                      </div>
+                    )}
+                  </div>
                   <p className="text-sm text-muted-foreground italic">
                     {questions[currentQuestion].imageDescription}
                   </p>
