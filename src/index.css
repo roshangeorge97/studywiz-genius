@@ -45,7 +45,7 @@ All colors MUST be HSL.
 
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(25 67% 15%), hsl(25 67% 25%));
-    --gradient-secondary: linear-gradient(135deg, hsl(45 100% 60%), hsl(36 100% 50%));
+    --gradient-secondary: linear-gradient(135deg, hsl(24 100% 50%), hsl(24 100% 60%)); /* #ff6100 theme */
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(42 33% 98%));
 
     /* Shadows */

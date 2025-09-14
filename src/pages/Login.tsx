@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GraduationCap, Mail, Lock } from "lucide-react";
+import logo from "@/assets/logo.png";
 import { toast } from "sonner";
 
 const Login = () => {
@@ -42,9 +43,14 @@ const Login = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-gradient-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-            <GraduationCap className="h-8 w-8 text-secondary-foreground" />
+            <img
+              src={logo}
+              alt="Crakify Logo"
+              className="h-10 w-10 object-contain"
+              draggable={false}
+            />
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">EduPlatform</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Crakify</h1>
           <p className="text-muted-foreground">Sign in to continue your learning journey</p>
         </div>
 

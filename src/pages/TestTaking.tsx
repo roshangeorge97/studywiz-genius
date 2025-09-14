@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { ChatBot } from "@/components/ChatBot";
+import glucose from "@/assets/glucose-image.jpeg";
 
 const TestTaking = () => {
   const navigate = useNavigate();
@@ -340,7 +341,7 @@ const TestTaking = () => {
               {questions[currentQuestion].hasImage && (
                 <div className="bg-muted/30 border-2 border-dashed border-accent/30 rounded-lg p-4 mb-4 text-center">
                   <img
-                    src={`src/assets/glucose-image.jpeg`}
+                    src={glucose}
                     alt={questions[currentQuestion].imageDescription || "Question related image"}
                     className="mx-auto mb-2 max-h-48 object-contain"
                   />
